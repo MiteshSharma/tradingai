@@ -1,0 +1,178 @@
+openapi: 3.0.0
+info:
+  title: TradingAI API
+  description: |
+    API for fetching and managing stock market data.
+    
+    ## Authentication
+    All endpoints require an API key to be passed in the `X-API-Key` header.
+    
+    ## Error Handling
+    The API uses standard HTTP status codes and returns error details in a consistent format.
+  version: '1.0.0'
+  contact:
+    name: TradingAI Support
+    email: support@tradingai.com
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local development server
+  - url: https://api.tradingai.com/v1
+    description: Production server
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message
+      required:
+        - detail
+
+    HistoricalDataRequest:
+      type: object
+      properties:
+        symbols:
+          type: array
+          items:
+            type: string
+          description: List of stock symbols
+          minItems: 1
+          maxItems: 5
+          example: ["RELIANCE", "TCS"]
+        from_date:
+          type: string
+          format: date-time
+          description: Start date for historical data
+          example: "2024-01-01T00:00:00Z"
+        to_date:
+          type: string
+          format: date-time
+          description: End date for historical data
+          example: "2024-01-31T00:00:00Z"
+      required:
+        - symbols
+        - from_date
+        - to_date
+
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        message:
+          type: string
+        total_records:
+          type: integer
+          description: Number of records processed
+      required:
+        - status
+        - message
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /stocks/historical:
+    post:
+      summary: Fetch historical stock data
+      description: |
+        Fetches historical data for given symbols between specified dates.
+        Data is stored in the database and duplicates are handled automatically.
+      operationId: fetchHistoricalData
+      tags:
+        - stocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricalDataRequest'
+      responses:
+        '200':
+          description: Successfully fetched data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                status: success
+                message: Successfully fetched and stored 1000 records
+                total_records: 1000
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalid_dates:
+                  value:
+                    detail: to_date must be greater than from_date
+                invalid_symbol:
+                  value:
+                    detail: "Invalid symbols: INVALID"
+        '403':
+          description: Invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: Could not validate API key
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: Failed to fetch data from Zerodha
+
+  /stocks/daily-update:
+    post:
+      summary: Trigger daily data update
+      description: |
+        Triggers an update for the last 5 days of data for all configured symbols.
+        This helps catch up on any missing data from weekends or holidays.
+        The task runs asynchronously in the background.
+      operationId: triggerDailyUpdate
+      tags:
+        - stocks
+      responses:
+        '200':
+          description: Update task started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                status: success
+                message: Daily update task started
+        '403':
+          description: Invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: Failed to trigger daily update
+
+tags:
+  - name: stocks
+    description: Stock market data operations 

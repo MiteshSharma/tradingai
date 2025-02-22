@@ -1,0 +1,53 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="tradingai",
+    version="0.1.0",
+    description="AI-powered trading analysis system",
+    author="Your Name",
+    author_email="your.email@example.com",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    install_requires=[
+        "fastapi>=0.109.0",
+        "uvicorn>=0.27.0",
+        "sqlalchemy>=2.0.0",
+        "pydantic>=2.0.0",
+        "pydantic-settings>=2.1.0",
+        "python-dotenv>=1.0.0",
+        "asyncpg>=0.29.0",
+        "pandas>=2.0.0",
+        "numpy>=1.24.0",
+        "loguru>=0.7.0",
+        "langchain>=0.1.0",
+        "openai>=1.0.0",
+        "pytz>=2023.3",
+        "httpx>=0.26.0",
+        "pytest>=8.0.0",
+        "pytest-asyncio>=0.23.0",
+        "pytest-cov>=4.1.0",
+    ],
+    extras_require={
+        "dev": [
+            "black>=24.0.0",
+            "isort>=5.13.0",
+            "flake8>=7.0.0",
+            "mypy>=1.8.0",
+            "pre-commit>=3.6.0",
+        ],
+        "test": [
+            "pytest>=8.0.0",
+            "pytest-asyncio>=0.23.0",
+            "pytest-cov>=4.1.0",
+            "pytest-mock>=3.12.0",
+            "httpx>=0.26.0",
+        ],
+    },
+    python_requires=">=3.12",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Financial and Insurance Industry",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.12",
+    ],
+) 

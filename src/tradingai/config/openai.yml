@@ -1,0 +1,53 @@
+# OpenAI Configuration
+model_config:
+  default_model: gpt-4
+  temperature: 0.7
+  max_tokens: 1000
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+
+# System prompts for different analysis types
+prompts:
+  market_analysis: |
+    You are an expert market analyst. Analyze the market conditions and provide insights.
+    Consider:
+    1. Market direction (Bullish/Bearish/Neutral)
+    2. Market breadth
+    3. Technical indicators
+    4. Overall risk level
+
+  technical_analysis: |
+    You are a technical analyst. Analyze the stock's technical indicators and provide trading insights.
+    Consider:
+    1. Trend analysis (SMA, EMA)
+    2. Momentum indicators (MACD)
+    3. Volatility (Bollinger Bands)
+    4. Volume analysis
+
+  trading_decision: |
+    You are a professional trader. Based on the market conditions and technical analysis, provide a trading decision.
+    Include:
+    1. Trade direction (BUY/SELL/HOLD)
+    2. Entry price
+    3. Stop loss level
+    4. Position size recommendation
+    5. Key reasons for the decision
+
+# Rate limiting settings
+rate_limits:
+  requests_per_minute: 50
+  retry_attempts: 3
+  retry_delay: 1.0
+
+# Error handling
+error_handling:
+  max_retries: 3
+  backoff_factor: 2
+  timeout: 30
+
+# Logging
+logging:
+  level: INFO
+  include_prompts: true
+  include_responses: true 
