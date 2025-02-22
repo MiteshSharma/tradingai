@@ -9,8 +9,8 @@ class ZerodhaAuthRepository:
     def __init__(self):
         self.base_url = "https://api.kite.trade"
         self.login_url = "https://kite.zerodha.com/connect/login"
-        self.api_key = "5e7n3q7ecslzkv0p"
-        self.api_secret = "m7e0wgmuhi660mlpbxzcvc0u51sy0nqh"
+        self.api_key = settings.ZERODHA_API_KEY
+        self.api_secret = settings.ZERODHA_API_SECRET
         
     def get_login_url(self) -> str:
         """Get the Zerodha login URL"""

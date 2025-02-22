@@ -32,7 +32,7 @@ class HistoricalData:
 class ZerodhaClient:
     def __init__(self, instrument_service: InstrumentService):
         self.base_url = "https://api.kite.trade"
-        self.api_key = "5e7n3q7ecslzkv0p"
+        self.api_key = settings.ZERODHA_API_KEY
         self.instrument_service = instrument_service
         
     @retry(
