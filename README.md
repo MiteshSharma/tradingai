@@ -142,3 +142,8 @@ curl http://localhost:8000/api/v1/stock/analyze/ZOTA/with-decision \
 - [OpenAI](https://openai.com/) for GPT-4 API
 - [FastAPI](https://fastapi.tiangolo.com/) for the web framework
 - [SQLAlchemy](https://www.sqlalchemy.org/) for database ORM
+
+  ---
+
+> This project was developed with the assistance of AI language models (Claude and GPT-4) to demonstrate the potential of AI-powered development while maintaining high code quality and security standards.
+
